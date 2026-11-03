@@ -4,6 +4,7 @@ import { OrderItem } from '../orders/entities/order-item.entity';
 import { Product } from '../products/entities/product.entity';
 import { User } from '../users/entities/user.entity';
 import { InitialSchema1793692236000 } from './migrations/1793692236000-InitialSchema';
+import { ReportingReadOnlyAccess1793700000000 } from './migrations/1793700000000-ReportingReadOnlyAccess';
 
 // Shared by the Nest app, the TypeORM CLI, the seed script and the e2e setup so they never drift.
 export function buildDataSourceOptions(url: string): DataSourceOptions {
@@ -11,7 +12,7 @@ export function buildDataSourceOptions(url: string): DataSourceOptions {
     type: 'postgres',
     url,
     entities: [User, Product, Order, OrderItem],
-    migrations: [InitialSchema1793692236000],
+    migrations: [InitialSchema1793692236000, ReportingReadOnlyAccess1793700000000],
     synchronize: false,
   };
 }

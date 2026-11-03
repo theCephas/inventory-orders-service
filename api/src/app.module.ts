@@ -10,6 +10,7 @@ import { buildDataSourceOptions } from './database/typeorm.options';
 import { HealthController } from './health/health.controller';
 import { OrdersModule } from './orders/orders.module';
 import { ProductsModule } from './products/products.module';
+import { ReportsModule } from './reports/reports.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -30,6 +31,7 @@ import { UsersModule } from './users/users.module';
     AuthModule,
     ProductsModule,
     OrdersModule,
+    ReportsModule,
   ],
   controllers: [HealthController],
   providers: [

@@ -75,8 +75,8 @@ them first, or see [Troubleshooting](#12-troubleshooting).
 ## 2. Quick start with Docker (recommended)
 
 ```bash
-git clone <this-repo-url> inventory-orders
-cd inventory-orders
+git clone https://github.com/theCephas/inventory-orders-service.git
+cd inventory-orders-service
 
 # 1. Create your env file. The defaults work as-is for local use.
 cp .env.example .env

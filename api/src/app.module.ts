@@ -8,6 +8,7 @@ import { RolesGuard } from './auth/guards/roles.guard';
 import { EnvironmentVariables, envValidationSchema } from './config/env.validation';
 import { buildDataSourceOptions } from './database/typeorm.options';
 import { HealthController } from './health/health.controller';
+import { OrdersModule } from './orders/orders.module';
 import { ProductsModule } from './products/products.module';
 import { UsersModule } from './users/users.module';
 
@@ -28,6 +29,7 @@ import { UsersModule } from './users/users.module';
     UsersModule,
     AuthModule,
     ProductsModule,
+    OrdersModule,
   ],
   controllers: [HealthController],
   providers: [

@@ -1,24 +1,18 @@
-import { INestApplication } from '@nestjs/common';
-import { Test } from '@nestjs/testing';
 import request from 'supertest';
-import { AppModule } from '../src/app.module';
-import { configureApp } from '../src/app.setup';
+import { createTestApp, TestContext } from './utils/test-app';
 
 describe('Health (e2e)', () => {
-  let app: INestApplication;
+  let ctx: TestContext;
 
   beforeAll(async () => {
-    const moduleRef = await Test.createTestingModule({ imports: [AppModule] }).compile();
-    app = moduleRef.createNestApplication();
-    configureApp(app);
-    await app.init();
+    ctx = await createTestApp();
   });
 
   afterAll(async () => {
-    await app.close();
+    await ctx.app.close();
   });
 
-  it('GET /api/v1/health returns ok', async () => {
-    await request(app.getHttpServer()).get('/api/v1/health').expect(200, { status: 'ok' });
+  it('GET /api/v1/health is public and returns ok', async () => {
+    await request(ctx.app.getHttpServer()).get('/api/v1/health').expect(200, { status: 'ok' });
   });
 });

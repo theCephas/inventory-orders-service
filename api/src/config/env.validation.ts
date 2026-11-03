@@ -4,6 +4,8 @@ export interface EnvironmentVariables {
   NODE_ENV: 'development' | 'production' | 'test';
   PORT: number;
   DATABASE_URL: string;
+  JWT_SECRET: string;
+  JWT_EXPIRES_IN: string;
 }
 
 export const envValidationSchema = Joi.object<EnvironmentVariables, true>({
@@ -12,4 +14,6 @@ export const envValidationSchema = Joi.object<EnvironmentVariables, true>({
   DATABASE_URL: Joi.string()
     .uri({ scheme: ['postgres', 'postgresql'] })
     .required(),
+  JWT_SECRET: Joi.string().min(32).required(),
+  JWT_EXPIRES_IN: Joi.string().default('1h'),
 });

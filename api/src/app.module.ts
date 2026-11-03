@@ -1,7 +1,14 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { envValidationSchema } from './config/env.validation';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { RolesGuard } from './auth/guards/roles.guard';
+import { EnvironmentVariables, envValidationSchema } from './config/env.validation';
+import { buildDataSourceOptions } from './database/typeorm.options';
 import { HealthController } from './health/health.controller';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -12,7 +19,19 @@ import { HealthController } from './health/health.controller';
       validationSchema: envValidationSchema,
       validationOptions: { abortEarly: false },
     }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService<EnvironmentVariables, true>) =>
+        buildDataSourceOptions(config.get('DATABASE_URL', { infer: true })),
+    }),
+    UsersModule,
+    AuthModule,
   ],
   controllers: [HealthController],
+  providers: [
+    // Order matters: authenticate first, then authorise by role.
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
+    { provide: APP_GUARD, useClass: RolesGuard },
+  ],
 })
 export class AppModule {}
